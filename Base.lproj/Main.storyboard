@@ -10,7 +10,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--AR Grapher-->
         <scene sceneID="4tr-qD-nG6">
             <objects>
                 <viewController id="ala-jn-40r" customClass="ViewController" customModule="AR_Calculator" customModuleProvider="target" sceneMemberID="viewController">
@@ -31,24 +31,40 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uJS-qq-FWF">
-                                <rect key="frame" x="62" y="143" width="251" height="30"/>
+                            <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SH3-Bi-DrV">
+                                <rect key="frame" x="0.0" y="114" width="375" height="162"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            </pickerView>
+                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uJS-qq-FWF">
+                                <rect key="frame" x="62" y="284" width="251" height="30"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UOG-U6-E5V">
                                         <rect key="frame" x="0.0" y="0.0" width="63" height="30"/>
                                         <state key="normal" title="+"/>
+                                        <connections>
+                                            <action selector="numPressed:" destination="ala-jn-40r" eventType="touchUpInside" id="7bd-6w-Lhw"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UFT-CD-CS8">
                                         <rect key="frame" x="63" y="0.0" width="62.5" height="30"/>
                                         <state key="normal" title="−"/>
+                                        <connections>
+                                            <action selector="numPressed:" destination="ala-jn-40r" eventType="touchUpInside" id="xRB-A1-s7y"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="40j-hI-eCc">
                                         <rect key="frame" x="125.5" y="0.0" width="63" height="30"/>
                                         <state key="normal" title="×"/>
+                                        <connections>
+                                            <action selector="numPressed:" destination="ala-jn-40r" eventType="touchUpInside" id="6n2-hC-NfL"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6y4-oq-XPU">
                                         <rect key="frame" x="188.5" y="0.0" width="62.5" height="30"/>
                                         <state key="normal" title="÷"/>
+                                        <connections>
+                                            <action selector="numPressed:" destination="ala-jn-40r" eventType="touchUpInside" id="rpG-2q-FtD"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <constraints>
@@ -57,8 +73,8 @@
                                     <constraint firstItem="UFT-CD-CS8" firstAttribute="width" secondItem="UOG-U6-E5V" secondAttribute="width" id="sf1-0J-PkH"/>
                                 </constraints>
                             </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="29" translatesAutoresizingMaskIntoConstraints="NO" id="h6w-rh-Caa">
-                                <rect key="frame" x="92.5" y="181" width="190" height="148"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" axis="vertical" spacing="29" translatesAutoresizingMaskIntoConstraints="NO" id="h6w-rh-Caa">
+                                <rect key="frame" x="93" y="322" width="190" height="148"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="50" translatesAutoresizingMaskIntoConstraints="NO" id="hp9-4Y-ydd">
                                         <rect key="frame" x="0.0" y="0.0" width="190" height="30"/>
@@ -66,14 +82,23 @@
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1hg-JH-AXh">
                                                 <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
                                                 <state key="normal" title="1"/>
+                                                <connections>
+                                                    <action selector="numPressed:" destination="ala-jn-40r" eventType="touchUpInside" id="7ZH-Vw-u8G"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zf2-y8-Xdi">
                                                 <rect key="frame" x="80" y="0.0" width="30" height="30"/>
                                                 <state key="normal" title="2"/>
+                                                <connections>
+                                                    <action selector="numPressed:" destination="ala-jn-40r" eventType="touchUpInside" id="oFN-LW-hxu"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Kg-li-1RO">
                                                 <rect key="frame" x="160" y="0.0" width="30" height="30"/>
                                                 <state key="normal" title="3"/>
+                                                <connections>
+                                                    <action selector="numPressed:" destination="ala-jn-40r" eventType="touchUpInside" id="kM1-92-mPq"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                     </stackView>
@@ -83,14 +108,23 @@
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zCe-xK-LFL">
                                                 <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
                                                 <state key="normal" title="4"/>
+                                                <connections>
+                                                    <action selector="numPressed:" destination="ala-jn-40r" eventType="touchUpInside" id="DV1-ls-93j"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4ag-x7-tBP">
                                                 <rect key="frame" x="80" y="0.0" width="30" height="30"/>
                                                 <state key="normal" title="5"/>
+                                                <connections>
+                                                    <action selector="numPressed:" destination="ala-jn-40r" eventType="touchUpInside" id="aQF-qj-UtY"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NQg-Q6-vjx">
                                                 <rect key="frame" x="160" y="0.0" width="30" height="30"/>
                                                 <state key="normal" title="6"/>
+                                                <connections>
+                                                    <action selector="numPressed:" destination="ala-jn-40r" eventType="touchUpInside" id="kZn-sT-7Pt"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                     </stackView>
@@ -100,21 +134,30 @@
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7mC-KW-Dow">
                                                 <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
                                                 <state key="normal" title="7"/>
+                                                <connections>
+                                                    <action selector="numPressed:" destination="ala-jn-40r" eventType="touchUpInside" id="R4e-2q-szp"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FTx-32-WtQ">
                                                 <rect key="frame" x="80" y="0.0" width="30" height="30"/>
                                                 <state key="normal" title="8"/>
+                                                <connections>
+                                                    <action selector="numPressed:" destination="ala-jn-40r" eventType="touchUpInside" id="Lc5-RB-E7c"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Aqb-IP-rbE">
                                                 <rect key="frame" x="160" y="0.0" width="30" height="30"/>
                                                 <state key="normal" title="9"/>
+                                                <connections>
+                                                    <action selector="numPressed:" destination="ala-jn-40r" eventType="touchUpInside" id="o2Z-Fn-d3D"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                     </stackView>
                                 </subviews>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ba8-9k-PIP">
-                                <rect key="frame" x="166" y="361" width="43" height="30"/>
+                                <rect key="frame" x="92" y="494" width="43" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Graph"/>
                                 <connections>
@@ -122,11 +165,18 @@
                                     <segue destination="bAn-1V-CNR" kind="show" identifier="Graph" id="EOV-qr-MMf"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uHF-6C-4ug">
+                                <rect key="frame" x="172" y="488" width="30" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="0"/>
+                                <connections>
+                                    <action selector="numPressed:" destination="ala-jn-40r" eventType="touchUpInside" id="0AQ-Kd-dgd"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="h6w-rh-Caa" firstAttribute="top" secondItem="uJS-qq-FWF" secondAttribute="bottom" constant="8" id="Eca-hD-GdU"/>
-                            <constraint firstItem="uJS-qq-FWF" firstAttribute="top" secondItem="Jpf-WG-06h" secondAttribute="bottom" constant="37" id="NYJ-21-Zhq"/>
                             <constraint firstItem="h6w-rh-Caa" firstAttribute="centerX" secondItem="C0V-6f-8e9" secondAttribute="centerX" id="Ztz-cQ-gdC"/>
                             <constraint firstItem="uJS-qq-FWF" firstAttribute="centerX" secondItem="C0V-6f-8e9" secondAttribute="centerX" id="ciG-SS-dOZ"/>
                             <constraint firstItem="Jpf-WG-06h" firstAttribute="leading" secondItem="C0V-6f-8e9" secondAttribute="leading" constant="16" id="eEQ-ur-wPm"/>
@@ -136,9 +186,10 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="C0V-6f-8e9"/>
                     </view>
-                    <navigationItem key="navigationItem" id="y8a-Co-K8T"/>
+                    <navigationItem key="navigationItem" title="AR Grapher" id="y8a-Co-K8T"/>
                     <connections>
                         <outlet property="eqnInputTextfield" destination="Jpf-WG-06h" id="h6g-pJ-hXE"/>
+                        <outlet property="eqnPicker" destination="SH3-Bi-DrV" id="opa-6C-TJi"/>
                         <outlet property="numPadStack" destination="h6w-rh-Caa" id="S9g-bA-xHZ"/>
                     </connections>
                 </viewController>

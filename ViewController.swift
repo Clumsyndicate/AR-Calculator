@@ -10,9 +10,13 @@ import UIKit
 import SceneKit
 import ARKit
 
-class ViewController: UIViewController, ARSCNViewDelegate, UITextFieldDelegate {
+class ViewController: UIViewController, ARSCNViewDelegate, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
+    
+    
+    
+    
 
-    // Mark: UI
+    // UI: String handling
     
     @IBOutlet weak var numPadStack: UIStackView!
     @IBOutlet weak var eqnInputTextfield: UITextField!
@@ -26,19 +30,25 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITextFieldDelegate {
         
         eqnInputTextfield.delegate = self
         
+        eqnPicker.dataSource = self
+        eqnPicker.delegate = self
+        
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         eqnInputTextfield.resignFirstResponder()
     }
     
-    private func analyzeEqn() {
-        guard let equation = eqnInputTextfield.text else {
-            return
+    var equation: String = "" {
+        didSet {
+            eqnInputTextfield.text = equation
         }
-        
-        
-        
+    }
+    
+    // UI: Actions
+    
+    @IBAction func numPressed(_ sender: UIButton) {
+        equation += sender.currentTitle!
     }
     
     @IBAction func graph(_ sender: UIButton) {
@@ -51,6 +61,40 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITextFieldDelegate {
         }
     }
     
+    // UI: Mode Selector
+    
+    @IBOutlet weak var eqnPicker: UIPickerView!
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return 2
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        print("Row = ", row)
+        switch row {
+        case 0:
+            return "Line"
+        case 1:
+            return "Plane"
+        default:
+            return ""
+        }
+    }
+    
+    // Calculator Brain
+    
+    private func analyzeEqn() {
+        guard let equation = eqnInputTextfield.text else {
+            return
+        }
+        
+        
+        
+    }
     
     
 }

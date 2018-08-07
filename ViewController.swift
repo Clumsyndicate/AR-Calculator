@@ -12,14 +12,16 @@ import ARKit
 
 class ViewController: UIViewController, ARSCNViewDelegate, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
     
-    
-    
-    
 
     // UI: String handling
     
     @IBOutlet weak var numPadStack: UIStackView!
     @IBOutlet weak var eqnInputTextfield: UITextField!
+    
+    enum pickerViewTag: Int {
+        case typeSelector  // Vector or Scalar
+        case eqnSelector  // Line or Plane
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,6 +34,13 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITextFieldDelegate, 
         
         eqnPicker.dataSource = self
         eqnPicker.delegate = self
+        eqnTypePicker.dataSource = self
+        eqnTypePicker.delegate = self
+        
+        // PickerView Tag setup
+        
+        eqnPicker.tag = pickerViewTag.eqnSelector.rawValue
+        eqnTypePicker.tag = pickerViewTag.typeSelector.rawValue
         
     }
     
@@ -64,6 +73,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITextFieldDelegate, 
     // UI: Mode Selector
     
     @IBOutlet weak var eqnPicker: UIPickerView!
+    @IBOutlet weak var eqnTypePicker: UIPickerView!
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -74,15 +84,27 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITextFieldDelegate, 
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        print("Row = ", row)
-        switch row {
-        case 0:
-            return "Line"
-        case 1:
-            return "Plane"
-        default:
-            return ""
+        print("Tag = ", pickerView.tag)
+        if pickerView.tag == pickerViewTag.eqnSelector.rawValue {
+            switch row {
+            case 0:
+                return "Line"
+            case 1:
+                return "Plane"
+            default:
+                return nil
+            }
+        } else if pickerView.tag == pickerViewTag.typeSelector.rawValue {
+            switch row {
+            case 0:
+                return "Scalar"
+            case 1:
+                return "Vector"
+            default:
+                return nil
+            }
         }
+        return nil
     }
     
     // Calculator Brain

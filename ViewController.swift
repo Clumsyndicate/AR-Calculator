@@ -15,7 +15,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITextFieldDelegate, 
 
     // UI: String handling
     
-    @IBOutlet weak var numPadStack: UIStackView!
+    //@IBOutlet weak var numPadStack: UIStackView!
     @IBOutlet weak var eqnInputTextfield: UITextField!
     
     enum pickerViewTag: Int {
@@ -25,11 +25,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITextFieldDelegate, 
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        /*
         numPadStack.layer.cornerRadius = 5
         numPadStack.layer.borderColor = UIColor.black.cgColor
         numPadStack.layer.borderWidth = 5
-        
+        */
         eqnInputTextfield.delegate = self
         
         eqnPicker.dataSource = self
@@ -56,17 +56,14 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITextFieldDelegate, 
     
     // UI: Actions
     
-    @IBAction func numPressed(_ sender: UIButton) {
-        equation += sender.currentTitle!
-    }
-    
     @IBAction func graph(_ sender: UIButton) {
-        analyzeEqn()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "Graph" {
-            
+            if let vc = segue.destination as? GraphViewController {
+                vc.startingPoint = analyzeEqn()
+            }
         }
     }
     
@@ -107,13 +104,37 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITextFieldDelegate, 
         return nil
     }
     
+    // Parameter input
+    
+    @IBOutlet weak var a: UITextField!
+    @IBOutlet weak var b: UITextField!
+    @IBOutlet weak var c: UITextField!
+    
+    @IBOutlet weak var x: UITextField!
+    @IBOutlet weak var y: UITextField!
+    @IBOutlet weak var z: UITextField!
+    
     // Calculator Brain
     
-    private func analyzeEqn() {
-        guard let equation = eqnInputTextfield.text else {
-            return
+    fileprivate func str(_ field: UITextField) -> Double {
+        guard let string = field.text, let num = Double(string) else {
+            return 0.0
         }
+        return num
+    }
+    
+    fileprivate func coordinatesFromK(k: Double) -> SCNVector3 {
+        return SCNVector3(k * str(a) + str(x), k * str(b) + str(y), k * str(c) + str(z))
+    }
+    
+    fileprivate func analyzeEqn() -> SCNVector3 {
         
+        let k = -(str(x) * str(a) + str(y) * str(b) + str(z) * str(c)) / (str(a) * str(a) + str(b) * str(b) + str(c) * str(c))
+        
+        let startingPoint = coordinatesFromK(k: k)
+        
+        print(startingPoint)
+        return startingPoint
         
         
     }

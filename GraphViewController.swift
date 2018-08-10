@@ -23,12 +23,16 @@ class GraphViewController: UIViewController, ARSCNViewDelegate {
         
         // Show statistics such as fps and timing information
         sceneView.showsStatistics = true
+        sceneView.debugOptions = [ARSCNDebugOptions.showWorldOrigin, ARSCNDebugOptions.showWorldOrigin]
         
-        // Create a new scene
-        let scene = SCNScene(named: "art.scnassets/ship.scn")!
         
-        // Set the scene to the view
-        sceneView.scene = scene
+        
+    }
+    
+    fileprivate var toEstablishCoordinateSystem: Bool = false
+    
+    @IBAction func establishSys(_ sender: UIButton) {
+        toEstablishCoordinateSystem = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -53,19 +57,80 @@ class GraphViewController: UIViewController, ARSCNViewDelegate {
     
     // MARK: - ARSCNViewDelegate
     
+    @IBInspectable
+    var axisLength: Double = 0.5
     
     // Override to create and configure nodes for anchors added to the view's session.
-    func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
+    
+    
+    
+    func renderer(_ renderer: SCNSceneRenderer, willRenderScene scene: SCNScene, atTime time: TimeInterval) {
+        guard let pointOfView = sceneView.pointOfView else { return }
         
-        let node = SCNNode()
-        
-        return node
+        if toEstablishCoordinateSystem {
+            
+            if let previousNode = scene.rootNode.childNodes.first {
+                previousNode.removeFromParentNode()
+            }
+            
+            let position = pointOfView.simdWorldFront
+            print(position)
+            
+            
+            
+            let parent_node = SCNNode()
+            
+            //
+            
+            let cyl = SCNCylinder(radius: 0.01, height: 1.0)
+            let cyl_node_x = SCNNode(geometry: cyl)
+            cyl_node_x.position = SCNVector3(position)
+            
+            cyl_node_x.geometry?.materials.first?.diffuse.contents = UIColor.orange
+            
+            parent_node.addChildNode(cyl_node_x)
+            
+            
+            let cyl_y = SCNCylinder(radius: 0.01, height: 1.0)
+            let cyl_node_y = SCNNode(geometry: cyl_y)
+            let pos = SCNVector3(position)
+            cyl_node_y.position = pos
+            cyl_node_y.rotation = SCNVector4(1, 0, 0, Double.pi / 2)
+            cyl_node_y.geometry?.materials.first?.diffuse.contents = UIColor.green
+            parent_node.addChildNode(cyl_node_y)
+            
+            let cyl_z = SCNCylinder(radius: 0.01, height: 1.0)
+            let cyl_node_z = SCNNode(geometry: cyl_z)
+            cyl_node_z.position = pos
+            cyl_node_z.rotation = SCNVector4(0, 0, 1, Double.pi / 2)
+            cyl_node_z.geometry?.materials.first?.diffuse.contents = UIColor.red
+            parent_node.addChildNode(cyl_node_z)
+            
+            drawFunction(scene: scene, parentNode: parent_node)
+            
+            
+            
+            scene.rootNode.addChildNode(parent_node)
+
+            
+            
+            
+            toEstablishCoordinateSystem = false
+        }
     }
+    
+    fileprivate func drawFunction(scene: SCNScene, parentNode: SCNNode) {
+        
+    }
+    
+    var a, b, c, x, y, z: Double!
+    var startingPoint: SCNVector3!
     
     
     func session(_ session: ARSession, didFailWithError error: Error) {
         // Present an error message to the user
-        
+        let alertvc = UIAlertController(title: "An error has occured!", message: "Please restart the app", preferredStyle: .alert)
+        present(alertvc, animated: true, completion: nil)
     }
     
     func sessionWasInterrupted(_ session: ARSession) {

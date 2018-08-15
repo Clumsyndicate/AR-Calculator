@@ -60,20 +60,21 @@ class GraphViewController: UIViewController, ARSCNViewDelegate {
     @IBInspectable
     var axisLength: Double = 0.5
     
+    @IBInspectable
+    var lineRadius: CGFloat = 0.01
+    
     // Override to create and configure nodes for anchors added to the view's session.
     
-    
+    var previousNode: SCNNode?
     
     func renderer(_ renderer: SCNSceneRenderer, willRenderScene scene: SCNScene, atTime time: TimeInterval) {
         guard let pointOfView = sceneView.pointOfView else { return }
         
         if toEstablishCoordinateSystem {
             
-            if let previousNode = scene.rootNode.childNodes.first {
-                previousNode.removeFromParentNode()
-            }
+            previousNode?.removeFromParentNode()
             
-            let position = pointOfView.simdWorldFront
+            let position = SCNVector3(pointOfView.simdWorldFront)
             print(position)
             
             
@@ -82,49 +83,63 @@ class GraphViewController: UIViewController, ARSCNViewDelegate {
             
             //
             
-            let cyl = SCNCylinder(radius: 0.01, height: 1.0)
+            let cyl = SCNCylinder(radius: lineRadius, height: 1.0)
             let cyl_node_x = SCNNode(geometry: cyl)
-            cyl_node_x.position = SCNVector3(position)
+            cyl_node_x.position = position
             
             cyl_node_x.geometry?.materials.first?.diffuse.contents = UIColor.orange
             
             parent_node.addChildNode(cyl_node_x)
             
             
-            let cyl_y = SCNCylinder(radius: 0.01, height: 1.0)
+            let cyl_y = SCNCylinder(radius: lineRadius, height: 1.0)
             let cyl_node_y = SCNNode(geometry: cyl_y)
-            let pos = SCNVector3(position)
-            cyl_node_y.position = pos
+            cyl_node_y.position = position
             cyl_node_y.rotation = SCNVector4(1, 0, 0, Double.pi / 2)
             cyl_node_y.geometry?.materials.first?.diffuse.contents = UIColor.green
             parent_node.addChildNode(cyl_node_y)
             
-            let cyl_z = SCNCylinder(radius: 0.01, height: 1.0)
+            let cyl_z = SCNCylinder(radius: lineRadius, height: 1.0)
             let cyl_node_z = SCNNode(geometry: cyl_z)
-            cyl_node_z.position = pos
+            cyl_node_z.position = position
             cyl_node_z.rotation = SCNVector4(0, 0, 1, Double.pi / 2)
             cyl_node_z.geometry?.materials.first?.diffuse.contents = UIColor.red
             parent_node.addChildNode(cyl_node_z)
             
-            drawFunction(scene: scene, parentNode: parent_node)
+            drawFunction(scene: scene, parentNode: parent_node, location: position)
             
             
             
             scene.rootNode.addChildNode(parent_node)
 
-            
+            previousNode = parent_node
             
             
             toEstablishCoordinateSystem = false
         }
     }
     
-    fileprivate func drawFunction(scene: SCNScene, parentNode: SCNNode) {
+    
+    fileprivate func drawFunction(scene: SCNScene, parentNode: SCNNode, location: SCNVector3) {
         
+        let function  = SCNCylinder(radius: lineRadius, height: 1.0)
+        function.materials.first?.diffuse.contents = UIColor.purple
+        let funcNode = SCNNode(geometry: function)
+        
+        guard let offsetOfStartingPoint = startingPoint else {
+            return
+        }
+        
+        funcNode.position = location + offsetOfStartingPoint
+        
+        funcNode.simdRotate(by: rotation, aroundTarget: funcNode.simdPosition)
+        
+        parentNode.addChildNode(funcNode)
     }
     
     var a, b, c, x, y, z: Double!
     var startingPoint: SCNVector3!
+    var rotation: simd_quatf!  // Euler's Angle
     
     
     func session(_ session: ARSession, didFailWithError error: Error) {
@@ -154,4 +169,10 @@ class GraphViewController: UIViewController, ARSCNViewDelegate {
     }
     */
 
+}
+
+extension SCNVector3 {
+    static func + (left: SCNVector3, right: SCNVector3) -> SCNVector3 {
+        return SCNVector3Make(left.x + right.x , left.y + right.y, left.z + right.z)
+    }
 }

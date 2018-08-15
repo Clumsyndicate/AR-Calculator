@@ -62,10 +62,16 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITextFieldDelegate, 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "Graph" {
             if let vc = segue.destination as? GraphViewController {
-                vc.startingPoint = analyzeEqn()
+                vc.startingPoint = analyzeEqn().startingPoint
+                vc.rotation = analyzeEqn().rotation
             }
         }
     }
+    
+    // UI: Equation
+    
+    @IBOutlet weak var scalarLineInputView: scalarLineView!
+    
     
     // UI: Mode Selector
     
@@ -116,28 +122,61 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITextFieldDelegate, 
     
     // Calculator Brain
     
-    fileprivate func str(_ field: UITextField) -> Double {
-        guard let string = field.text, let num = Double(string) else {
+    fileprivate func numOf(_ field: UITextField) -> Double {
+        guard let numOfing = field.text, let num = Double(numOfing) else {
             return 0.0
         }
         return num
     }
     
     fileprivate func coordinatesFromK(k: Double) -> SCNVector3 {
-        return SCNVector3(k * str(a) + str(x), k * str(b) + str(y), k * str(c) + str(z))
+        return SCNVector3(k * numOf(a) + numOf(x), k * numOf(b) + numOf(y), k * numOf(c) + numOf(z))
     }
     
-    fileprivate func analyzeEqn() -> SCNVector3 {
+    fileprivate func analyzeEqn() -> (startingPoint: SCNVector3, rotation: simd_quatf) {
         
-        let k = -(str(x) * str(a) + str(y) * str(b) + str(z) * str(c)) / (str(a) * str(a) + str(b) * str(b) + str(c) * str(c))
+        // starting point
+        
+        let k = -(numOf(x) * numOf(a) + numOf(y) * numOf(b) + numOf(z) * numOf(c)) / (numOf(a) * numOf(a) + numOf(b) * numOf(b) + numOf(c) * numOf(c))
         
         let startingPoint = coordinatesFromK(k: k)
         
         print(startingPoint)
-        return startingPoint
+        
+        // rotation calc
+        
+        let directionVector = SCNVector3Make(Float(numOf(a)), Float(numOf(b)), Float(numOf(c))).normalize()
+        
+        
+        // let rotation = SCNVector3Make(acos(directionVector.x), acos(directionVector.y), acos(directionVector.z))
+        
+        let rotation = simd_quaternion(simd_make_float3(0, 1, 0), directionVector.simd_quat())
+        
+        print("rotation = ", rotation)
+        
+        return (startingPoint, rotation)
         
         
     }
     
+    
+}
+
+extension SCNVector3 {
+    func length() -> CGFloat {
+        return CGFloat(sqrt(self.x * self.x + self.y * self.y + self.z * self.z))
+    }
+    
+    func normalize() -> SCNVector3 {
+        return self / self.length()
+    }
+    static func / (left: SCNVector3, right: CGFloat) -> SCNVector3 {
+        let right = Float(right)
+        return SCNVector3Make(left.x / right, left.y / right, left.z / right)
+    }
+    
+    func simd_quat() -> simd_float3 {
+        return simd_make_float3(self.x, self.y, self.z)
+    }
     
 }
